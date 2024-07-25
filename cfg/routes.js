@@ -21,12 +21,19 @@ routes.get('/usuario/:id', (req, res) => {
     res.json(user);
 });
 
+function isValidEmail(email) {
+    // Expressão regular para validar email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
 // Criar um novo usuário
+
 routes.post('/usuario/register', (req, res) => {
     const { email, senha } = req.body;
-
-    if (!email || !senha) {
-        return res.status(400).json({ message: 'Email e senha são obrigatórios' });
+    
+    if (!email || !senha || !isValidEmail(email)) {
+        return res.status(400).json({ message: 'Email e senha válidos são obrigatórios' });
     }
 
     const newUser = {
