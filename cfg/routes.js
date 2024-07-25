@@ -21,8 +21,8 @@ routes.get('/usuario/:id', (req, res) => {
     res.json(user);
 });
 
+//Função para validação de email
 function isValidEmail(email) {
-    // Expressão regular para validar email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
