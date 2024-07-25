@@ -21,8 +21,8 @@ routes.get('/usuario/:id', (req, res) => {
     res.json(user);
 });
 
+// Função de validação de email
 function isValidEmail(email) {
-    // Expressão regular para validar email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
@@ -51,8 +51,9 @@ routes.put('/usuario/alterar/:id', (req, res) => {
     const id = req.params.id;
     const { email, senha } = req.body;
 
-    if (!email || !senha) {
-        return res.status(400).json({ message: 'Email e senha são obrigatórios' });
+    // Validação de email e senha
+    if (!email || !senha || !isValidEmail(email)) {
+        return res.status(400).json({ message: 'Email e senha válidos são obrigatórios' });
     }
 
     let userUpdated = false;
@@ -65,10 +66,12 @@ routes.put('/usuario/alterar/:id', (req, res) => {
         return user;
     });
 
+    // Verifica se o usuário foi atualizado com sucesso
     if (!userUpdated) {
         return res.status(404).json({ message: 'Usuário não encontrado' });
     }
 
+    // Retorna mensagem de sucesso com os dados atualizados do usuário
     res.json({ message: 'Usuário atualizado com sucesso', user: { id, email, senha } });
 });
 
